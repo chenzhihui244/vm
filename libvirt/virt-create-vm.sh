@@ -4,11 +4,16 @@
 
 vm_name=$1
 iso=/home/jeff/vm-test/result-WH-20180305-B19.iso
-eth=eth1
+eth=enahisic2i1
 br=br1
 
-grep ${eth} /proc/net/dev > /dev/null 2>&1 || echo "${eth} device not exist" && exit
+if ! grep ${eth} /proc/net/dev > /dev/null 2>&1; then
+       echo "${eth} device not exist"
+       exit
+fi
+
 grep ${br} /proc/net/dev > /dev/null 2>&1 || virsh iface-bridge ${eth} ${br}
+
 [ -f ${vm_name}.qcow2 ] || qemu-img create -f qcow2 -o size=20G ${vm_name}.qcow2
 
 virt-install \
