@@ -5,22 +5,19 @@ BR_TYPE=linux  # linux or ovs
 BRIDGE=br0
 TAP=$1
 
-
-set -x
-
 if [ -n "$TAP" ]; then
 	### Create BRIDGE if there is no
-	#ip link show $BRIDGE > /dev/null 2>&1
-	#if [ $? -ne 0 ]; then
-	#	echo "Create $BRIDGE.."
-	#	if [ "$BR_TYPE" = "linux" ]; then
-	#		ip link add $BRIDGE type bridge
-	#		ip link set $BRIDGE up
-	#		sleep 0.5s
-	#	else
-	#		ovs-vsctl add-br $BRIDGE
-	#	fi
-	#fi
+	ip link show $BRIDGE > /dev/null 2>&1
+	if [ $? -ne 0 ]; then
+		echo "Create $BRIDGE.."
+		if [ "$BR_TYPE" = "linux" ]; then
+			ip link add $BRIDGE type bridge
+			ip link set $BRIDGE up
+			sleep 0.5s
+		else
+			ovs-vsctl add-br $BRIDGE
+		fi
+	fi
 
 	## add tapx interface to BRIDGE
         ip tuntap add $TAP mode tap user `whoami`

@@ -38,7 +38,7 @@ install_dependencies() {
 		qemu-efi
 }
 
-prepare() {
+prepare_flash_img() {
 	if [ ! -f flash0.img ]; then
 		dd if=/dev/zero of=flash0.img bs=1M count=0 seek=64
 		dd if=/usr/share/qemu-efi/QEMU_EFI.fd of=flash0.img conv=notrunc
@@ -68,5 +68,5 @@ if [ $# -eq 1 ]; then
 fi
 
 install_dependencies
-prepare
+prepare_flash_img
 sudo qemu-system-aarch64 $KVM_ARGS $HDA_ARGS $NET_ARGS $CDROM_ARGS
