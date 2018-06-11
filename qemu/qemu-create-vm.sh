@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #CDROM_IMG=~/work/estuary/submodules/build-ubuntu/out/release/master/ubuntu/mini.iso
-CDROM_IMG=/home/jeff/vm-test/result-WH-20180305-B19.iso
+CDROM_IMG=/c00365621/result-WH-20180312-B21.iso
 HDA_IMG=hda.img
 MAC=$(printf 'DE:AD:BE:EF:%02X:%02X\n' $((RANDOM%256)) $((RANDOM%256)))
 
@@ -26,7 +26,8 @@ make_hda_arg()
 make_net_arg()
 {
 	echo "-device virtio-net-device,netdev=net0,mac=$MAC" \
-	     "-netdev tap,id=net0,script=qemu-ifup.sh,downscript=qemu-ifdown.sh"
+	"-netdev tap,id=net0,script=qemu-ifup.sh,downscript=qemu-ifdown.sh"
+	    # "-netdev tap,id=net0,ifname=tap1,script=no,downscript=no"
 }
 
 #		qemu-kvm \
@@ -62,7 +63,7 @@ if [ $# -eq 1 ]; then
                 CDROM_ARGS=`make_cdrom_arg $CDROM_IMG`
             ;;
             *)
-                CDROM_ARGS=""
+                CDROM_ARGS="-vnc 5"
             ;;
         esac
 fi
